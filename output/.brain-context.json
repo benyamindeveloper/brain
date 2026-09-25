@@ -1,0 +1,3092 @@
+{
+  "metadata": {
+    "project_name": "Barain",
+    "project_root": "D:\\Barain",
+    "generated_at": "2026-09-25T10:46:21.061000",
+    "total_files": 14,
+    "total_classes": 23,
+    "total_functions": 95,
+    "total_dependencies": 51,
+    "languages": [
+      "python"
+    ],
+    "architecture_patterns": [
+      "Domain-Driven Design (DDD)",
+      "Repository Pattern"
+    ]
+  },
+  "files": {
+    "src\\brain\\cli.py": {
+      "path": "D:\\Barain\\src\\brain\\cli.py",
+      "relative_path": "src\\brain\\cli.py",
+      "language": "python",
+      "size_bytes": 7814,
+      "lines_of_code": 197,
+      "imports": [
+        "sys",
+        "pathlib.Path",
+        "typing.Optional",
+        "click",
+        "rich.console.Console",
+        "rich.progress.Progress",
+        "rich.progress.TextColumn",
+        "rich.progress.BarColumn",
+        "rich.table.Table",
+        "brain.scanner.repository_scanner.RepositoryScanner",
+        "brain.analyzer.multi_language_analyzer.AnalyzerFactory",
+        "brain.generator.context_generator.ContextGenerator",
+        "brain.models.core.Language",
+        "brain.models.core.FileEntity"
+      ],
+      "exports": [
+        "cli",
+        "scan",
+        "structure",
+        "print_tree",
+        "languages",
+        "_print_summary",
+        "main"
+      ],
+      "classes": [],
+      "functions": [
+        "src\\brain\\cli.py:cli",
+        "src\\brain\\cli.py:scan",
+        "src\\brain\\cli.py:structure",
+        "src\\brain\\cli.py:print_tree",
+        "src\\brain\\cli.py:languages",
+        "src\\brain\\cli.py:_print_summary",
+        "src\\brain\\cli.py:main"
+      ],
+      "architecture_layer": "unknown",
+      "last_modified": 1790320437.646782
+    },
+    "src\\brain\\__init__.py": {
+      "path": "D:\\Barain\\src\\brain\\__init__.py",
+      "relative_path": "src\\brain\\__init__.py",
+      "language": "python",
+      "size_bytes": 192,
+      "lines_of_code": 8,
+      "imports": [
+        "brain.cli.main"
+      ],
+      "exports": [],
+      "classes": [],
+      "functions": [],
+      "architecture_layer": "unknown",
+      "last_modified": 1790319584.9603536
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py": {
+      "path": "D:\\Barain\\src\\brain\\analyzer\\architecture_analyzer.py",
+      "relative_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "language": "python",
+      "size_bytes": 10056,
+      "lines_of_code": 235,
+      "imports": [
+        "collections.defaultdict",
+        "pathlib.Path",
+        "typing.Optional",
+        "brain.models.core.FileEntity",
+        "brain.models.core.ArchitectureLayer",
+        "brain.models.core.ArchitectureLayerEntity",
+        "brain.models.core.ArchitectureAnalysis",
+        "brain.models.core.ClassEntity",
+        "brain.models.core.FunctionEntity"
+      ],
+      "exports": [
+        "ArchitectureAnalyzer"
+      ],
+      "classes": [
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer"
+      ],
+      "functions": [
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.__init__",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_file",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_class",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_function",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.analyze",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._build_layers",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_allowed_dependencies",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_forbidden_dependencies",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_layer_description",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._detect_patterns",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_layered_structure",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_clean_architecture",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_ddd_patterns",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_mvc_patterns",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_repository_pattern",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_cqrs_pattern",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._check_layer_violations",
+        "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._calculate_metrics"
+      ],
+      "architecture_layer": "unknown",
+      "last_modified": 1790319543.642297
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py": {
+      "path": "D:\\Barain\\src\\brain\\analyzer\\dependency_analyzer.py",
+      "relative_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "language": "python",
+      "size_bytes": 8235,
+      "lines_of_code": 201,
+      "imports": [
+        "collections.defaultdict",
+        "pathlib.Path",
+        "typing.Optional",
+        "brain.models.core.FileEntity",
+        "brain.models.core.DependencyEntity",
+        "brain.models.core.DependencyGraph",
+        "brain.models.core.Language"
+      ],
+      "exports": [
+        "DependencyAnalyzer"
+      ],
+      "classes": [
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer"
+      ],
+      "functions": [
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.__init__",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.add_file",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.analyze",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._resolve_internal_dependencies",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._resolve_import",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._identify_external_dependencies",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._is_internal_import",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._detect_circular_dependencies",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.strongconnect",
+        "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.get_dependency_stats"
+      ],
+      "architecture_layer": "unknown",
+      "last_modified": 1790320434.3266673
+    },
+    "src\\brain\\analyzer\\git_analyzer.py": {
+      "path": "D:\\Barain\\src\\brain\\analyzer\\git_analyzer.py",
+      "relative_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "language": "python",
+      "size_bytes": 7703,
+      "lines_of_code": 219,
+      "imports": [
+        "collections.defaultdict",
+        "pathlib.Path",
+        "typing.Optional",
+        "datetime.datetime",
+        "git.Repo",
+        "git.InvalidGitRepositoryError",
+        "brain.models.core.FileEntity",
+        "brain.models.core.EvolutionEventEntity",
+        "brain.models.core.GitHistory",
+        "brain.models.core.ArchitectureLayer",
+        "re"
+      ],
+      "exports": [
+        "GitAnalyzer"
+      ],
+      "classes": [
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer"
+      ],
+      "functions": [
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.__init__",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._init_repo",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.is_available",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.analyze_file_history",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.analyze_recent_commits",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._classify_commit",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._calculate_impact",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._extract_issues",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.get_file_ownership",
+        "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.get_hotspots"
+      ],
+      "architecture_layer": "unknown",
+      "last_modified": 1790320575.313869
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py": {
+      "path": "D:\\Barain\\src\\brain\\analyzer\\multi_language_analyzer.py",
+      "relative_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "language": "python",
+      "size_bytes": 7150,
+      "lines_of_code": 195,
+      "imports": [
+        "abc.ABC",
+        "abc.abstractmethod",
+        "pathlib.Path",
+        "typing.Optional",
+        "brain.models.core.FileEntity",
+        "brain.models.core.Language",
+        "brain.models.core.ClassEntity",
+        "brain.models.core.FunctionEntity",
+        "brain.models.core.DependencyEntity",
+        "tree_sitter.Language",
+        "tree_sitter.Parser",
+        "tree_sitter_python",
+        "tree_sitter_javascript",
+        "tree_sitter_typescript",
+        "brain.analyzer.python_analyzer.PythonASTAnalyzer"
+      ],
+      "exports": [
+        "BaseAnalyzer",
+        "TreeSitterAnalyzer",
+        "AnalyzerFactory"
+      ],
+      "classes": [
+        "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:AnalyzerFactory"
+      ],
+      "functions": [
+        "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.analyze",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_classes",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_functions",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_dependencies",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.__init__",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._init_parser",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.analyze",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._traverse",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_import",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_import_from",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_class",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_function",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_method",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_call",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_classes",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_functions",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_dependencies",
+        "src\\brain\\analyzer\\multi_language_analyzer.py:AnalyzerFactory.create"
+      ],
+      "architecture_layer": "unknown",
+      "last_modified": 1790319334.4163506
+    },
+    "src\\brain\\analyzer\\python_analyzer.py": {
+      "path": "D:\\Barain\\src\\brain\\analyzer\\python_analyzer.py",
+      "relative_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "language": "python",
+      "size_bytes": 7393,
+      "lines_of_code": 209,
+      "imports": [
+        "ast",
+        "pathlib.Path",
+        "typing.Optional",
+        "brain.models.core.FileEntity",
+        "brain.models.core.ClassEntity",
+        "brain.models.core.FunctionEntity",
+        "brain.models.core.DependencyEntity",
+        "brain.models.core.Language",
+        "brain.models.core.NodeType"
+      ],
+      "exports": [
+        "PythonASTAnalyzer"
+      ],
+      "classes": [
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer"
+      ],
+      "functions": [
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.__init__",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.analyze",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._generic_visit",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Module",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Import",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_ImportFrom",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_ClassDef",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_FunctionDef",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_AsyncFunctionDef",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._process_function",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Call",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_classes",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_functions",
+        "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_dependencies"
+      ],
+      "architecture_layer": "unknown",
+      "last_modified": 1790319310.1268375
+    },
+    "src\\brain\\analyzer\\__init__.py": {
+      "path": "D:\\Barain\\src\\brain\\analyzer\\__init__.py",
+      "relative_path": "src\\brain\\analyzer\\__init__.py",
+      "language": "python",
+      "size_bytes": 22,
+      "lines_of_code": 1,
+      "imports": [],
+      "exports": [],
+      "classes": [],
+      "functions": [],
+      "architecture_layer": "unknown",
+      "last_modified": 1790319450.7360106
+    },
+    "src\\brain\\generator\\context_generator.py": {
+      "path": "D:\\Barain\\src\\brain\\generator\\context_generator.py",
+      "relative_path": "src\\brain\\generator\\context_generator.py",
+      "language": "python",
+      "size_bytes": 18628,
+      "lines_of_code": 398,
+      "imports": [
+        "json",
+        "pathlib.Path",
+        "typing.Optional",
+        "datetime.datetime",
+        "brain.models.core.FileEntity",
+        "brain.models.core.ClassEntity",
+        "brain.models.core.FunctionEntity",
+        "brain.models.core.DependencyEntity",
+        "brain.models.core.ArchitectureLayer",
+        "brain.models.core.ArchitectureLayerEntity",
+        "brain.models.core.ArchitectureAnalysis",
+        "brain.models.core.BusinessRuleEntity",
+        "brain.models.core.EvolutionEventEntity",
+        "brain.models.core.ProjectGraph",
+        "brain.models.core.Language",
+        "brain.models.core.GitHistory",
+        "brain.analyzer.dependency_analyzer.DependencyAnalyzer",
+        "brain.analyzer.dependency_analyzer.DependencyGraph",
+        "brain.analyzer.architecture_analyzer.ArchitectureAnalyzer",
+        "brain.analyzer.git_analyzer.GitAnalyzer"
+      ],
+      "exports": [
+        "ContextGenerator"
+      ],
+      "classes": [
+        "src\\brain\\generator\\context_generator.py:ContextGenerator"
+      ],
+      "functions": [
+        "src\\brain\\generator\\context_generator.py:ContextGenerator.__init__",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator.add_file_entity",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator.add_class_entity",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator.add_function_entity",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator.finalize",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator._get_languages",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator._analyze_git_history",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator.generate_markdown",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator._compress_content",
+        "src\\brain\\generator\\context_generator.py:ContextGenerator.generate_json"
+      ],
+      "architecture_layer": "unknown",
+      "last_modified": 1790320549.7736862
+    },
+    "src\\brain\\generator\\__init__.py": {
+      "path": "D:\\Barain\\src\\brain\\generator\\__init__.py",
+      "relative_path": "src\\brain\\generator\\__init__.py",
+      "language": "python",
+      "size_bytes": 23,
+      "lines_of_code": 1,
+      "imports": [],
+      "exports": [],
+      "classes": [],
+      "functions": [],
+      "architecture_layer": "unknown",
+      "last_modified": 1790319460.4948304
+    },
+    "src\\brain\\models\\core.py": {
+      "path": "D:\\Barain\\src\\brain\\models\\core.py",
+      "relative_path": "src\\brain\\models\\core.py",
+      "language": "python",
+      "size_bytes": 5910,
+      "lines_of_code": 175,
+      "imports": [
+        "enum.Enum",
+        "pathlib.Path",
+        "typing.Optional",
+        "pydantic.BaseModel",
+        "pydantic.Field"
+      ],
+      "exports": [
+        "Language",
+        "ArchitectureLayer",
+        "NodeType",
+        "FileEntity",
+        "ClassEntity",
+        "FunctionEntity",
+        "DependencyEntity",
+        "ArchitectureLayerEntity",
+        "BusinessRuleEntity",
+        "EvolutionEventEntity",
+        "GitHistory",
+        "DependencyGraph",
+        "ArchitectureAnalysis",
+        "ProjectGraph"
+      ],
+      "classes": [
+        "src\\brain\\models\\core.py:Language",
+        "src\\brain\\models\\core.py:ArchitectureLayer",
+        "src\\brain\\models\\core.py:NodeType",
+        "src\\brain\\models\\core.py:FileEntity",
+        "src\\brain\\models\\core.py:ClassEntity",
+        "src\\brain\\models\\core.py:FunctionEntity",
+        "src\\brain\\models\\core.py:DependencyEntity",
+        "src\\brain\\models\\core.py:ArchitectureLayerEntity",
+        "src\\brain\\models\\core.py:BusinessRuleEntity",
+        "src\\brain\\models\\core.py:EvolutionEventEntity",
+        "src\\brain\\models\\core.py:GitHistory",
+        "src\\brain\\models\\core.py:DependencyGraph",
+        "src\\brain\\models\\core.py:ArchitectureAnalysis",
+        "src\\brain\\models\\core.py:ProjectGraph"
+      ],
+      "functions": [],
+      "architecture_layer": "domain",
+      "last_modified": 1790319805.1617901
+    },
+    "src\\brain\\models\\__init__.py": {
+      "path": "D:\\Barain\\src\\brain\\models\\__init__.py",
+      "relative_path": "src\\brain\\models\\__init__.py",
+      "language": "python",
+      "size_bytes": 41,
+      "lines_of_code": 1,
+      "imports": [],
+      "exports": [],
+      "classes": [],
+      "functions": [],
+      "architecture_layer": "domain",
+      "last_modified": 1790319184.6612723
+    },
+    "src\\brain\\scanner\\repository_scanner.py": {
+      "path": "D:\\Barain\\src\\brain\\scanner\\repository_scanner.py",
+      "relative_path": "src\\brain\\scanner\\repository_scanner.py",
+      "language": "python",
+      "size_bytes": 6307,
+      "lines_of_code": 196,
+      "imports": [
+        "os",
+        "pathlib.Path",
+        "typing.Optional",
+        "pathspec.PathSpec",
+        "pathspec.patterns.GitWildMatchPattern",
+        "brain.models.core.FileEntity",
+        "brain.models.core.Language",
+        "brain.models.core.ArchitectureLayer"
+      ],
+      "exports": [
+        "RepositoryScanner"
+      ],
+      "classes": [
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner"
+      ],
+      "functions": [
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.__init__",
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._is_ignored",
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._detect_language",
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._detect_architecture_layer",
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.scan",
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.get_project_structure",
+        "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.build_tree"
+      ],
+      "architecture_layer": "domain",
+      "last_modified": 1790319226.1799054
+    },
+    "src\\brain\\scanner\\__init__.py": {
+      "path": "D:\\Barain\\src\\brain\\scanner\\__init__.py",
+      "relative_path": "src\\brain\\scanner\\__init__.py",
+      "language": "python",
+      "size_bytes": 32,
+      "lines_of_code": 1,
+      "imports": [],
+      "exports": [],
+      "classes": [],
+      "functions": [],
+      "architecture_layer": "unknown",
+      "last_modified": 1790319202.0369117
+    }
+  },
+  "classes": {
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer": {
+      "name": "ArchitectureAnalyzer",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 13,
+      "line_end": 235,
+      "methods": [],
+      "properties": [],
+      "base_classes": [],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Analyzes project architecture and detects patterns."
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer": {
+      "name": "DependencyAnalyzer",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 12,
+      "line_end": 201,
+      "methods": [],
+      "properties": [],
+      "base_classes": [],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Analyzes and builds dependency graph for the project."
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer": {
+      "name": "GitAnalyzer",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 19,
+      "line_end": 219,
+      "methods": [],
+      "properties": [],
+      "base_classes": [],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Analyzes Git history to extract evolution events and file history."
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer": {
+      "name": "BaseAnalyzer",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 10,
+      "line_end": 31,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "ABC"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": true,
+      "is_interface": false,
+      "docstring": "Base class for language-specific analyzers."
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer": {
+      "name": "TreeSitterAnalyzer",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 34,
+      "line_end": 180,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseAnalyzer"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Generic tree-sitter based analyzer."
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:AnalyzerFactory": {
+      "name": "AnalyzerFactory",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:AnalyzerFactory",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 183,
+      "line_end": 195,
+      "methods": [],
+      "properties": [],
+      "base_classes": [],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Factory for creating language-specific analyzers."
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer": {
+      "name": "PythonASTAnalyzer",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 13,
+      "line_end": 209,
+      "methods": [],
+      "properties": [],
+      "base_classes": [],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Analyzes Python source files using AST."
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator": {
+      "name": "ContextGenerator",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 18,
+      "line_end": 398,
+      "methods": [],
+      "properties": [],
+      "base_classes": [],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Generates compressed context files for LLM consumption."
+    },
+    "src\\brain\\models\\core.py:Language": {
+      "name": "Language",
+      "qualified_name": "src\\brain\\models\\core.py:Language",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 9,
+      "line_end": 23,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "str",
+        "Enum"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Supported programming languages."
+    },
+    "src\\brain\\models\\core.py:ArchitectureLayer": {
+      "name": "ArchitectureLayer",
+      "qualified_name": "src\\brain\\models\\core.py:ArchitectureLayer",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 26,
+      "line_end": 33,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "str",
+        "Enum"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Standard architecture layers."
+    },
+    "src\\brain\\models\\core.py:NodeType": {
+      "name": "NodeType",
+      "qualified_name": "src\\brain\\models\\core.py:NodeType",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 36,
+      "line_end": 43,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "str",
+        "Enum"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Types of nodes in the project graph."
+    },
+    "src\\brain\\models\\core.py:FileEntity": {
+      "name": "FileEntity",
+      "qualified_name": "src\\brain\\models\\core.py:FileEntity",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 46,
+      "line_end": 60,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Represents a source file in the project."
+    },
+    "src\\brain\\models\\core.py:ClassEntity": {
+      "name": "ClassEntity",
+      "qualified_name": "src\\brain\\models\\core.py:ClassEntity",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 63,
+      "line_end": 77,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Represents a class/interface in the codebase."
+    },
+    "src\\brain\\models\\core.py:FunctionEntity": {
+      "name": "FunctionEntity",
+      "qualified_name": "src\\brain\\models\\core.py:FunctionEntity",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 80,
+      "line_end": 94,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Represents a function/method in the codebase."
+    },
+    "src\\brain\\models\\core.py:DependencyEntity": {
+      "name": "DependencyEntity",
+      "qualified_name": "src\\brain\\models\\core.py:DependencyEntity",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 97,
+      "line_end": 103,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Represents a dependency between components."
+    },
+    "src\\brain\\models\\core.py:ArchitectureLayerEntity": {
+      "name": "ArchitectureLayerEntity",
+      "qualified_name": "src\\brain\\models\\core.py:ArchitectureLayerEntity",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 106,
+      "line_end": 113,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Represents an architectural layer."
+    },
+    "src\\brain\\models\\core.py:BusinessRuleEntity": {
+      "name": "BusinessRuleEntity",
+      "qualified_name": "src\\brain\\models\\core.py:BusinessRuleEntity",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 116,
+      "line_end": 124,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Represents a business rule extracted from code."
+    },
+    "src\\brain\\models\\core.py:EvolutionEventEntity": {
+      "name": "EvolutionEventEntity",
+      "qualified_name": "src\\brain\\models\\core.py:EvolutionEventEntity",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 127,
+      "line_end": 136,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Represents an evolution event from Git history."
+    },
+    "src\\brain\\models\\core.py:GitHistory": {
+      "name": "GitHistory",
+      "qualified_name": "src\\brain\\models\\core.py:GitHistory",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 139,
+      "line_end": 145,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Git history summary for a file."
+    },
+    "src\\brain\\models\\core.py:DependencyGraph": {
+      "name": "DependencyGraph",
+      "qualified_name": "src\\brain\\models\\core.py:DependencyGraph",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 148,
+      "line_end": 155,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Dependency graph for the project."
+    },
+    "src\\brain\\models\\core.py:ArchitectureAnalysis": {
+      "name": "ArchitectureAnalysis",
+      "qualified_name": "src\\brain\\models\\core.py:ArchitectureAnalysis",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 158,
+      "line_end": 163,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Architecture analysis results."
+    },
+    "src\\brain\\models\\core.py:ProjectGraph": {
+      "name": "ProjectGraph",
+      "qualified_name": "src\\brain\\models\\core.py:ProjectGraph",
+      "file_path": "src\\brain\\models\\core.py",
+      "line_start": 166,
+      "line_end": 175,
+      "methods": [],
+      "properties": [],
+      "base_classes": [
+        "BaseModel"
+      ],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Complete project graph representation."
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner": {
+      "name": "RepositoryScanner",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 67,
+      "line_end": 196,
+      "methods": [],
+      "properties": [],
+      "base_classes": [],
+      "implemented_interfaces": [],
+      "decorators": [],
+      "is_abstract": false,
+      "is_interface": false,
+      "docstring": "Scans a repository and discovers source files with metadata."
+    }
+  },
+  "functions": {
+    "src\\brain\\cli.py:cli": {
+      "name": "cli",
+      "qualified_name": "src\\brain\\cli.py:cli",
+      "file_path": "src\\brain\\cli.py",
+      "line_start": 23,
+      "line_end": 25,
+      "parameters": [],
+      "return_type": null,
+      "decorators": [
+        "click.group()",
+        "click.version_option(version='0.1.0', prog_name='brain')"
+      ],
+      "is_async": false,
+      "is_method": false,
+      "class_name": null,
+      "docstring": "Project Brain - Cognitive Context & Evolution Engine for AI-Assisted Development",
+      "complexity": 1
+    },
+    "src\\brain\\cli.py:scan": {
+      "name": "scan",
+      "qualified_name": "src\\brain\\cli.py:scan",
+      "file_path": "src\\brain\\cli.py",
+      "line_start": 36,
+      "line_end": 103,
+      "parameters": [
+        "path",
+        "output",
+        "name",
+        "max_tokens",
+        "fmt",
+        "ignore",
+        "verbose"
+      ],
+      "return_type": null,
+      "decorators": [
+        "cli.command()",
+        "click.argument('path', type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path), default='.')",
+        "click.option('--output', '-o', type=click.Path(path_type=Path), default=None, help='Output directory for context files')",
+        "click.option('--name', '-n', type=str, default=None, help='Project name (defaults to directory name)')",
+        "click.option('--max-tokens', type=int, default=8000, help='Max tokens for markdown output')",
+        "click.option('--format', 'fmt', type=click.Choice(['md', 'json', 'both']), default='both', help='Output format')",
+        "click.option('--ignore', '-i', multiple=True, help='Additional ignore patterns')",
+        "click.option('--verbose', '-v', is_flag=True, help='Verbose output')"
+      ],
+      "is_async": false,
+      "is_method": false,
+      "class_name": null,
+      "docstring": "Scan a project and generate context files.",
+      "complexity": 1
+    },
+    "src\\brain\\cli.py:structure": {
+      "name": "structure",
+      "qualified_name": "src\\brain\\cli.py:structure",
+      "file_path": "src\\brain\\cli.py",
+      "line_start": 108,
+      "line_end": 128,
+      "parameters": [
+        "path"
+      ],
+      "return_type": null,
+      "decorators": [
+        "cli.command()",
+        "click.argument('path', type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path), default='.')"
+      ],
+      "is_async": false,
+      "is_method": false,
+      "class_name": null,
+      "docstring": "Show project structure tree.",
+      "complexity": 1
+    },
+    "src\\brain\\cli.py:print_tree": {
+      "name": "print_tree",
+      "qualified_name": "src\\brain\\cli.py:print_tree",
+      "file_path": "src\\brain\\cli.py",
+      "line_start": 114,
+      "line_end": 123,
+      "parameters": [
+        "node",
+        "prefix",
+        "is_last"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": false,
+      "class_name": null,
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\cli.py:languages": {
+      "name": "languages",
+      "qualified_name": "src\\brain\\cli.py:languages",
+      "file_path": "src\\brain\\cli.py",
+      "line_start": 133,
+      "line_end": 157,
+      "parameters": [
+        "path"
+      ],
+      "return_type": null,
+      "decorators": [
+        "cli.command()",
+        "click.argument('path', type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path), default='.')"
+      ],
+      "is_async": false,
+      "is_method": false,
+      "class_name": null,
+      "docstring": "Show language statistics for the project.",
+      "complexity": 1
+    },
+    "src\\brain\\cli.py:_print_summary": {
+      "name": "_print_summary",
+      "qualified_name": "src\\brain\\cli.py:_print_summary",
+      "file_path": "src\\brain\\cli.py",
+      "line_start": 160,
+      "line_end": 188,
+      "parameters": [
+        "generator",
+        "console",
+        "verbose"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": false,
+      "class_name": null,
+      "docstring": "Print analysis summary.",
+      "complexity": 1
+    },
+    "src\\brain\\cli.py:main": {
+      "name": "main",
+      "qualified_name": "src\\brain\\cli.py:main",
+      "file_path": "src\\brain\\cli.py",
+      "line_start": 191,
+      "line_end": 193,
+      "parameters": [],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": false,
+      "class_name": null,
+      "docstring": "Main entry point.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.__init__": {
+      "name": "__init__",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.__init__",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 16,
+      "line_end": 20,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_file": {
+      "name": "add_file",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_file",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 22,
+      "line_end": 24,
+      "parameters": [
+        "self",
+        "file_entity"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Add a file entity.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_class": {
+      "name": "add_class",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_class",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 26,
+      "line_end": 28,
+      "parameters": [
+        "self",
+        "class_entity"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Add a class entity.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_function": {
+      "name": "add_function",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.add_function",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 30,
+      "line_end": 32,
+      "parameters": [
+        "self",
+        "function_entity"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Add a function entity.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.analyze": {
+      "name": "analyze",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer.analyze",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 34,
+      "line_end": 46,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "ArchitectureAnalysis",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Analyze architecture and return results.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._build_layers": {
+      "name": "_build_layers",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._build_layers",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 48,
+      "line_end": 76,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Build architecture layers from file entities.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_allowed_dependencies": {
+      "name": "_get_allowed_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_allowed_dependencies",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 78,
+      "line_end": 100,
+      "parameters": [
+        "self",
+        "layer"
+      ],
+      "return_type": "list[ArchitectureLayer]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Get allowed dependencies for a layer (based on Clean Architecture).",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_forbidden_dependencies": {
+      "name": "_get_forbidden_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_forbidden_dependencies",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 102,
+      "line_end": 106,
+      "parameters": [
+        "self",
+        "layer"
+      ],
+      "return_type": "list[ArchitectureLayer]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Get forbidden dependencies for a layer.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_layer_description": {
+      "name": "_get_layer_description",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._get_layer_description",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 108,
+      "line_end": 117,
+      "parameters": [
+        "self",
+        "layer"
+      ],
+      "return_type": "str",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Get description for a layer.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._detect_patterns": {
+      "name": "_detect_patterns",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._detect_patterns",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 119,
+      "line_end": 145,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Detect architectural patterns.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_layered_structure": {
+      "name": "_has_layered_structure",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_layered_structure",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 147,
+      "line_end": 151,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Check if project has clear layer separation.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_clean_architecture": {
+      "name": "_has_clean_architecture",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_clean_architecture",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 153,
+      "line_end": 160,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Check for Clean Architecture markers.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_ddd_patterns": {
+      "name": "_has_ddd_patterns",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_ddd_patterns",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 162,
+      "line_end": 166,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Check for DDD patterns.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_mvc_patterns": {
+      "name": "_has_mvc_patterns",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_mvc_patterns",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 168,
+      "line_end": 172,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Check for MVC/MVVM patterns.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_repository_pattern": {
+      "name": "_has_repository_pattern",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_repository_pattern",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 174,
+      "line_end": 179,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Check for Repository pattern.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_cqrs_pattern": {
+      "name": "_has_cqrs_pattern",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._has_cqrs_pattern",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 181,
+      "line_end": 185,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Check for CQRS pattern.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._check_layer_violations": {
+      "name": "_check_layer_violations",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._check_layer_violations",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 187,
+      "line_end": 217,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[dict]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Check for layer dependency violations.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._calculate_metrics": {
+      "name": "_calculate_metrics",
+      "qualified_name": "src\\brain\\analyzer\\architecture_analyzer.py:ArchitectureAnalyzer._calculate_metrics",
+      "file_path": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "line_start": 219,
+      "line_end": 235,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ArchitectureAnalyzer",
+      "docstring": "Calculate architecture metrics.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.__init__": {
+      "name": "__init__",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.__init__",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 15,
+      "line_end": 19,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.add_file": {
+      "name": "add_file",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.add_file",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 21,
+      "line_end": 30,
+      "parameters": [
+        "self",
+        "file_entity"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Add a file entity to the analyzer.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.analyze": {
+      "name": "analyze",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.analyze",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 32,
+      "line_end": 45,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "'DependencyGraph'",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Analyze dependencies and return graph.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._resolve_internal_dependencies": {
+      "name": "_resolve_internal_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._resolve_internal_dependencies",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 47,
+      "line_end": 73,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[DependencyEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Resolve imports to internal project files.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._resolve_import": {
+      "name": "_resolve_import",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._resolve_import",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 75,
+      "line_end": 104,
+      "parameters": [
+        "self",
+        "source_path",
+        "import_name",
+        "module_map"
+      ],
+      "return_type": "Optional[str]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Resolve an import to an internal file path.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._identify_external_dependencies": {
+      "name": "_identify_external_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._identify_external_dependencies",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 106,
+      "line_end": 122,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[str]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Identify external (third-party) dependencies.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._is_internal_import": {
+      "name": "_is_internal_import",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._is_internal_import",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 124,
+      "line_end": 133,
+      "parameters": [
+        "self",
+        "import_name",
+        "internal_modules"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Check if an import is internal to the project.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._detect_circular_dependencies": {
+      "name": "_detect_circular_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer._detect_circular_dependencies",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 135,
+      "line_end": 177,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[list[str]]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Detect circular dependencies using Tarjan's algorithm.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.strongconnect": {
+      "name": "strongconnect",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.strongconnect",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 145,
+      "line_end": 171,
+      "parameters": [
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.get_dependency_stats": {
+      "name": "get_dependency_stats",
+      "qualified_name": "src\\brain\\analyzer\\dependency_analyzer.py:DependencyAnalyzer.get_dependency_stats",
+      "file_path": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "line_start": 179,
+      "line_end": 201,
+      "parameters": [
+        "self",
+        "dependency_graph"
+      ],
+      "return_type": "dict",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "DependencyAnalyzer",
+      "docstring": "Get dependency statistics.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.__init__": {
+      "name": "__init__",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.__init__",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 22,
+      "line_end": 25,
+      "parameters": [
+        "self",
+        "repo_path"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._init_repo": {
+      "name": "_init_repo",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._init_repo",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 27,
+      "line_end": 34,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Initialize Git repo if available.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.is_available": {
+      "name": "is_available",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.is_available",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 36,
+      "line_end": 38,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Check if Git analysis is available.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.analyze_file_history": {
+      "name": "analyze_file_history",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.analyze_file_history",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 40,
+      "line_end": 81,
+      "parameters": [
+        "self",
+        "file_entity"
+      ],
+      "return_type": "GitHistory",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Analyze Git history for a specific file.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.analyze_recent_commits": {
+      "name": "analyze_recent_commits",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.analyze_recent_commits",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 83,
+      "line_end": 112,
+      "parameters": [
+        "self",
+        "max_commits"
+      ],
+      "return_type": "list[EvolutionEventEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Analyze recent commits for evolution events.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._classify_commit": {
+      "name": "_classify_commit",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._classify_commit",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 114,
+      "line_end": 131,
+      "parameters": [
+        "self",
+        "commit"
+      ],
+      "return_type": "str",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Classify commit type based on message and stats.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._calculate_impact": {
+      "name": "_calculate_impact",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._calculate_impact",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 133,
+      "line_end": 157,
+      "parameters": [
+        "self",
+        "commit",
+        "files_changed"
+      ],
+      "return_type": "float",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Calculate impact score based on diff stats.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._extract_issues": {
+      "name": "_extract_issues",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer._extract_issues",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 159,
+      "line_end": 173,
+      "parameters": [
+        "self",
+        "message"
+      ],
+      "return_type": "list[str]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Extract issue references from commit message.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.get_file_ownership": {
+      "name": "get_file_ownership",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.get_file_ownership",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 175,
+      "line_end": 196,
+      "parameters": [
+        "self",
+        "file_entities"
+      ],
+      "return_type": "dict[str, list[str]]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Get code ownership patterns (top contributors per file).",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.get_hotspots": {
+      "name": "get_hotspots",
+      "qualified_name": "src\\brain\\analyzer\\git_analyzer.py:GitAnalyzer.get_hotspots",
+      "file_path": "src\\brain\\analyzer\\git_analyzer.py",
+      "line_start": 198,
+      "line_end": 219,
+      "parameters": [
+        "self",
+        "file_entities",
+        "threshold"
+      ],
+      "return_type": "list[dict]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "GitAnalyzer",
+      "docstring": "Identify code hotspots (frequently changed, complex files).",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.analyze": {
+      "name": "analyze",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.analyze",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 14,
+      "line_end": 16,
+      "parameters": [
+        "self",
+        "file_entity"
+      ],
+      "return_type": "FileEntity",
+      "decorators": [
+        "abstractmethod"
+      ],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "BaseAnalyzer",
+      "docstring": "Analyze a file and populate the entity.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_classes": {
+      "name": "get_classes",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_classes",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 19,
+      "line_end": 21,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict[str, ClassEntity]",
+      "decorators": [
+        "abstractmethod"
+      ],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "BaseAnalyzer",
+      "docstring": "Get extracted classes.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_functions": {
+      "name": "get_functions",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_functions",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 24,
+      "line_end": 26,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict[str, FunctionEntity]",
+      "decorators": [
+        "abstractmethod"
+      ],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "BaseAnalyzer",
+      "docstring": "Get extracted functions.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_dependencies": {
+      "name": "get_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:BaseAnalyzer.get_dependencies",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 29,
+      "line_end": 31,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[DependencyEntity]",
+      "decorators": [
+        "abstractmethod"
+      ],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "BaseAnalyzer",
+      "docstring": "Get extracted dependencies.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.__init__": {
+      "name": "__init__",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.__init__",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 37,
+      "line_end": 47,
+      "parameters": [
+        "self",
+        "language"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._init_parser": {
+      "name": "_init_parser",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._init_parser",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 49,
+      "line_end": 67,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Initialize tree-sitter parser for the language.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.analyze": {
+      "name": "analyze",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.analyze",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 69,
+      "line_end": 94,
+      "parameters": [
+        "self",
+        "file_entity"
+      ],
+      "return_type": "FileEntity",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Analyze a file using tree-sitter.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._traverse": {
+      "name": "_traverse",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._traverse",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 96,
+      "line_end": 113,
+      "parameters": [
+        "self",
+        "node",
+        "source"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Traverse tree-sitter AST.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_import": {
+      "name": "_handle_import",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_import",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 115,
+      "line_end": 118,
+      "parameters": [
+        "self",
+        "node",
+        "source"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Handle import statement.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_import_from": {
+      "name": "_handle_import_from",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_import_from",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 120,
+      "line_end": 123,
+      "parameters": [
+        "self",
+        "node",
+        "source"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Handle from ... import statement.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_class": {
+      "name": "_handle_class",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_class",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 125,
+      "line_end": 139,
+      "parameters": [
+        "self",
+        "node",
+        "source"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Handle class definition.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_function": {
+      "name": "_handle_function",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_function",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 141,
+      "line_end": 155,
+      "parameters": [
+        "self",
+        "node",
+        "source"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Handle function definition.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_method": {
+      "name": "_handle_method",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_method",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 157,
+      "line_end": 159,
+      "parameters": [
+        "self",
+        "node",
+        "source"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Handle method definition.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_call": {
+      "name": "_handle_call",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer._handle_call",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 161,
+      "line_end": 171,
+      "parameters": [
+        "self",
+        "node",
+        "source"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": "Handle function call.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_classes": {
+      "name": "get_classes",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_classes",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 173,
+      "line_end": 174,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict[str, ClassEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_functions": {
+      "name": "get_functions",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_functions",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 176,
+      "line_end": 177,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict[str, FunctionEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_dependencies": {
+      "name": "get_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:TreeSitterAnalyzer.get_dependencies",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 179,
+      "line_end": 180,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[DependencyEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "TreeSitterAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\multi_language_analyzer.py:AnalyzerFactory.create": {
+      "name": "create",
+      "qualified_name": "src\\brain\\analyzer\\multi_language_analyzer.py:AnalyzerFactory.create",
+      "file_path": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "line_start": 187,
+      "line_end": 195,
+      "parameters": [
+        "language"
+      ],
+      "return_type": "BaseAnalyzer",
+      "decorators": [
+        "staticmethod"
+      ],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "AnalyzerFactory",
+      "docstring": "Create analyzer for the given language.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.__init__": {
+      "name": "__init__",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.__init__",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 16,
+      "line_end": 23,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.analyze": {
+      "name": "analyze",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.analyze",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 25,
+      "line_end": 52,
+      "parameters": [
+        "self",
+        "file_entity"
+      ],
+      "return_type": "FileEntity",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Analyze a Python file and populate the entity with extracted info.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit": {
+      "name": "_visit",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 54,
+      "line_end": 58,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit AST nodes.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._generic_visit": {
+      "name": "_generic_visit",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._generic_visit",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 60,
+      "line_end": 63,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Generic visitor for unhandled nodes.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Module": {
+      "name": "_visit_Module",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Module",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 65,
+      "line_end": 68,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit module node.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Import": {
+      "name": "_visit_Import",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Import",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 70,
+      "line_end": 78,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit import statement.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_ImportFrom": {
+      "name": "_visit_ImportFrom",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_ImportFrom",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 80,
+      "line_end": 90,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit from ... import statement.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_ClassDef": {
+      "name": "_visit_ClassDef",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_ClassDef",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 92,
+      "line_end": 128,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit class definition.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_FunctionDef": {
+      "name": "_visit_FunctionDef",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_FunctionDef",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 130,
+      "line_end": 132,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit function definition.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_AsyncFunctionDef": {
+      "name": "_visit_AsyncFunctionDef",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_AsyncFunctionDef",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 134,
+      "line_end": 136,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit async function definition.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._process_function": {
+      "name": "_process_function",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._process_function",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 138,
+      "line_end": 182,
+      "parameters": [
+        "self",
+        "node",
+        "is_async"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Process function/method node.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Call": {
+      "name": "_visit_Call",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer._visit_Call",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 184,
+      "line_end": 197,
+      "parameters": [
+        "self",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Visit function call - track dependencies.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_classes": {
+      "name": "get_classes",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_classes",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 199,
+      "line_end": 201,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict[str, ClassEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Get extracted classes.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_functions": {
+      "name": "get_functions",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_functions",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 203,
+      "line_end": 205,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict[str, FunctionEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Get extracted functions.",
+      "complexity": 1
+    },
+    "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_dependencies": {
+      "name": "get_dependencies",
+      "qualified_name": "src\\brain\\analyzer\\python_analyzer.py:PythonASTAnalyzer.get_dependencies",
+      "file_path": "src\\brain\\analyzer\\python_analyzer.py",
+      "line_start": 207,
+      "line_end": 209,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[DependencyEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "PythonASTAnalyzer",
+      "docstring": "Get extracted dependencies.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator.__init__": {
+      "name": "__init__",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator.__init__",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 21,
+      "line_end": 29,
+      "parameters": [
+        "self",
+        "project_root",
+        "project_name"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator.add_file_entity": {
+      "name": "add_file_entity",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator.add_file_entity",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 31,
+      "line_end": 35,
+      "parameters": [
+        "self",
+        "file_entity"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Add a file entity to the project graph.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator.add_class_entity": {
+      "name": "add_class_entity",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator.add_class_entity",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 37,
+      "line_end": 40,
+      "parameters": [
+        "self",
+        "class_entity"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Add a class entity.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator.add_function_entity": {
+      "name": "add_function_entity",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator.add_function_entity",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 42,
+      "line_end": 45,
+      "parameters": [
+        "self",
+        "function_entity"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Add a function entity.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator.finalize": {
+      "name": "finalize",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator.finalize",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 47,
+      "line_end": 69,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Finalize analysis and build graphs.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator._get_languages": {
+      "name": "_get_languages",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator._get_languages",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 71,
+      "line_end": 76,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[str]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Get list of languages in the project.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator._analyze_git_history": {
+      "name": "_analyze_git_history",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator._analyze_git_history",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 78,
+      "line_end": 91,
+      "parameters": [
+        "self"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Analyze Git history for evolution events and file history.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator.generate_markdown": {
+      "name": "generate_markdown",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator.generate_markdown",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 93,
+      "line_end": 270,
+      "parameters": [
+        "self",
+        "output_path",
+        "max_tokens"
+      ],
+      "return_type": "str",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Generate .brain-context.md file.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator._compress_content": {
+      "name": "_compress_content",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator._compress_content",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 272,
+      "line_end": 286,
+      "parameters": [
+        "self",
+        "content",
+        "max_tokens"
+      ],
+      "return_type": "str",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Compress content to fit token limit.",
+      "complexity": 1
+    },
+    "src\\brain\\generator\\context_generator.py:ContextGenerator.generate_json": {
+      "name": "generate_json",
+      "qualified_name": "src\\brain\\generator\\context_generator.py:ContextGenerator.generate_json",
+      "file_path": "src\\brain\\generator\\context_generator.py",
+      "line_start": 288,
+      "line_end": 398,
+      "parameters": [
+        "self",
+        "output_path"
+      ],
+      "return_type": "dict",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "ContextGenerator",
+      "docstring": "Generate .brain-context.json file.",
+      "complexity": 1
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.__init__": {
+      "name": "__init__",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.__init__",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 70,
+      "line_end": 73,
+      "parameters": [
+        "self",
+        "root_path",
+        "ignore_patterns"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "RepositoryScanner",
+      "docstring": null,
+      "complexity": 1
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._is_ignored": {
+      "name": "_is_ignored",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._is_ignored",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 75,
+      "line_end": 81,
+      "parameters": [
+        "self",
+        "path"
+      ],
+      "return_type": "bool",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "RepositoryScanner",
+      "docstring": "Check if a path should be ignored.",
+      "complexity": 1
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._detect_language": {
+      "name": "_detect_language",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._detect_language",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 83,
+      "line_end": 85,
+      "parameters": [
+        "self",
+        "path"
+      ],
+      "return_type": "Language",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "RepositoryScanner",
+      "docstring": "Detect programming language from file extension.",
+      "complexity": 1
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._detect_architecture_layer": {
+      "name": "_detect_architecture_layer",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner._detect_architecture_layer",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 87,
+      "line_end": 119,
+      "parameters": [
+        "self",
+        "rel_path"
+      ],
+      "return_type": "ArchitectureLayer",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "RepositoryScanner",
+      "docstring": "Detect architecture layer from file path (heuristic).",
+      "complexity": 1
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.scan": {
+      "name": "scan",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.scan",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 121,
+      "line_end": 166,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "list[FileEntity]",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "RepositoryScanner",
+      "docstring": "Scan the repository and return list of source files.",
+      "complexity": 1
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.get_project_structure": {
+      "name": "get_project_structure",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.get_project_structure",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 168,
+      "line_end": 196,
+      "parameters": [
+        "self"
+      ],
+      "return_type": "dict",
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "RepositoryScanner",
+      "docstring": "Get a tree representation of the project structure.",
+      "complexity": 1
+    },
+    "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.build_tree": {
+      "name": "build_tree",
+      "qualified_name": "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner.build_tree",
+      "file_path": "src\\brain\\scanner\\repository_scanner.py",
+      "line_start": 172,
+      "line_end": 193,
+      "parameters": [
+        "path",
+        "node"
+      ],
+      "return_type": null,
+      "decorators": [],
+      "is_async": false,
+      "is_method": true,
+      "class_name": "RepositoryScanner",
+      "docstring": null,
+      "complexity": 1
+    }
+  },
+  "dependencies": [
+    {
+      "source": "src\\brain\\cli.py",
+      "target": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\cli.py",
+      "target": "src\\brain\\scanner\\repository_scanner.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\cli.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\cli.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\cli.py",
+      "target": "src\\brain\\generator\\context_generator.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\__init__.py",
+      "target": "src\\brain\\cli.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\git_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\git_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\git_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\git_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "target": "src\\brain\\analyzer\\python_analyzer.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\multi_language_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\python_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\python_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\python_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\python_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\python_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\analyzer\\python_analyzer.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\analyzer\\git_analyzer.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\analyzer\\architecture_analyzer.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\analyzer\\dependency_analyzer.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\generator\\context_generator.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\scanner\\repository_scanner.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\scanner\\repository_scanner.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    },
+    {
+      "source": "src\\brain\\scanner\\repository_scanner.py",
+      "target": "src\\brain\\models\\core.py",
+      "dependency_type": "import",
+      "strength": 1.0,
+      "metadata": {}
+    }
+  ],
+  "architecture": {
+    "patterns": [
+      "Domain-Driven Design (DDD)",
+      "Repository Pattern"
+    ],
+    "layers": {
+      "presentation": {
+        "name": "presentation",
+        "description": "UI layer - controllers, views, components, API endpoints",
+        "files": [],
+        "classes": [],
+        "allowed_dependencies": [
+          "application",
+          "domain",
+          "shared"
+        ],
+        "forbidden_dependencies": [
+          "infrastructure"
+        ]
+      },
+      "application": {
+        "name": "application",
+        "description": "Application layer - use cases, services, DTOs, mappers",
+        "files": [],
+        "classes": [],
+        "allowed_dependencies": [
+          "domain",
+          "shared"
+        ],
+        "forbidden_dependencies": [
+          "presentation",
+          "infrastructure"
+        ]
+      },
+      "domain": {
+        "name": "domain",
+        "description": "Domain layer - entities, value objects, aggregates, domain events",
+        "files": [
+          "src\\brain\\models\\core.py",
+          "src\\brain\\models\\__init__.py",
+          "src\\brain\\scanner\\repository_scanner.py"
+        ],
+        "classes": [
+          "src\\brain\\models\\core.py:Language",
+          "src\\brain\\models\\core.py:ArchitectureLayer",
+          "src\\brain\\models\\core.py:NodeType",
+          "src\\brain\\models\\core.py:FileEntity",
+          "src\\brain\\models\\core.py:ClassEntity",
+          "src\\brain\\models\\core.py:FunctionEntity",
+          "src\\brain\\models\\core.py:DependencyEntity",
+          "src\\brain\\models\\core.py:ArchitectureLayerEntity",
+          "src\\brain\\models\\core.py:BusinessRuleEntity",
+          "src\\brain\\models\\core.py:EvolutionEventEntity",
+          "src\\brain\\models\\core.py:GitHistory",
+          "src\\brain\\models\\core.py:DependencyGraph",
+          "src\\brain\\models\\core.py:ArchitectureAnalysis",
+          "src\\brain\\models\\core.py:ProjectGraph",
+          "src\\brain\\scanner\\repository_scanner.py:RepositoryScanner"
+        ],
+        "allowed_dependencies": [
+          "shared"
+        ],
+        "forbidden_dependencies": [
+          "presentation",
+          "application",
+          "infrastructure"
+        ]
+      },
+      "infrastructure": {
+        "name": "infrastructure",
+        "description": "Infrastructure layer - database, external services, frameworks",
+        "files": [],
+        "classes": [],
+        "allowed_dependencies": [
+          "domain",
+          "application",
+          "shared"
+        ],
+        "forbidden_dependencies": [
+          "presentation"
+        ]
+      },
+      "shared": {
+        "name": "shared",
+        "description": "Shared kernel - common utilities, base classes, extensions",
+        "files": [],
+        "classes": [],
+        "allowed_dependencies": [],
+        "forbidden_dependencies": [
+          "presentation",
+          "application",
+          "domain",
+          "infrastructure"
+        ]
+      }
+    },
+    "violations": [],
+    "metrics": {
+      "total_files": 14,
+      "layered_files": 3,
+      "layer_coverage": 0.21428571428571427,
+      "files_per_layer": {
+        "unknown": 11,
+        "domain": 3
+      },
+      "detected_patterns": [
+        "Domain-Driven Design (DDD)",
+        "Repository Pattern"
+      ],
+      "violation_count": 0
+    }
+  },
+  "dependency_graph": {
+    "internal_dependencies": 51,
+    "external_dependencies": [
+      "abc",
+      "ast",
+      "brain",
+      "click",
+      "collections",
+      "datetime",
+      "enum",
+      "git",
+      "json",
+      "os",
+      "pathlib",
+      "pathspec",
+      "pydantic",
+      "re",
+      "rich",
+      "sys",
+      "tree_sitter",
+      "tree_sitter_javascript",
+      "tree_sitter_python",
+      "tree_sitter_typescript",
+      "typing"
+    ],
+    "circular_dependencies": [],
+    "stats": {
+      "total_files": 14,
+      "total_dependencies": 72,
+      "internal_dependencies": 51,
+      "external_dependencies": 21,
+      "circular_dependency_groups": 0,
+      "avg_dependencies_per_file": 5.142857142857143
+    }
+  },
+  "evolution": {}
+}
