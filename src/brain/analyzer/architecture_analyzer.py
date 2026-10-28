@@ -63,14 +63,21 @@ class ArchitectureAnalyzer:
             if layer == ArchitectureLayer.UNKNOWN:
                 continue
 
+            files = layer_files.get(layer, [])
+            classes = layer_classes.get(layer, [])
+
+            # Only create layer entity if it has files or classes
+            if not files and not classes:
+                continue
+
             allowed = self._get_allowed_dependencies(layer)
             forbidden = self._get_forbidden_dependencies(layer)
 
             self.layers[layer] = ArchitectureLayerEntity(
                 name=layer,
                 description=self._get_layer_description(layer),
-                files=layer_files.get(layer, []),
-                classes=layer_classes.get(layer, []),
+                files=files,
+                classes=classes,
                 allowed_dependencies=allowed,
                 forbidden_dependencies=forbidden,
             )
@@ -188,6 +195,14 @@ class ArchitectureAnalyzer:
         """Check for layer dependency violations."""
         violations = []
 
+        # Build module path map for import resolution
+        module_map = {}
+        for f in self.files.values():
+            module_path = f.relative_path.replace("\\", "/").replace("/", ".").removesuffix(".py")
+            module_map[module_path] = f
+            if module_path.startswith("src."):
+                module_map[module_path[4:]] = f
+
         for source_file in self.files.values():
             source_layer = source_file.architecture_layer
             if source_layer == ArchitectureLayer.UNKNOWN:
@@ -196,7 +211,19 @@ class ArchitectureAnalyzer:
             allowed = self._get_allowed_dependencies(source_layer)
 
             for imp in source_file.imports:
-                target_file = self.files.get(imp)
+                # Try to resolve import to a file
+                target_file = None
+                if imp in module_map:
+                    target_file = module_map[imp]
+                else:
+                    # Try matching module part (e.g., "infrastructure.database.ClassName")
+                    parts = imp.split(".")
+                    for i in range(len(parts) - 1, 0, -1):
+                        module_part = ".".join(parts[:i])
+                        if module_part in module_map:
+                            target_file = module_map[module_part]
+                            break
+
                 if not target_file:
                     continue
 

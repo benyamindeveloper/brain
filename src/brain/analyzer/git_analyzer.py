@@ -113,8 +113,27 @@ class GitAnalyzer:
 
     def _classify_commit(self, commit) -> str:
         """Classify commit type based on message and stats."""
-        msg = commit.message.lower()
+        msg = commit.message.lower().strip()
 
+        # Check for conventional commit prefixes first (more specific)
+        if msg.startswith("test:") or msg.startswith("test ") or " test:" in msg:
+            return "test"
+        elif msg.startswith("fix:") or msg.startswith("fix ") or " fix:" in msg:
+            return "fix"
+        elif msg.startswith("feat:") or msg.startswith("feat ") or " feat:" in msg:
+            return "feature"
+        elif msg.startswith("refactor:") or msg.startswith("refactor "):
+            return "refactor"
+        elif msg.startswith("docs:") or msg.startswith("docs "):
+            return "docs"
+        elif msg.startswith("chore:") or msg.startswith("chore "):
+            return "chore"
+        elif msg.startswith("build:") or msg.startswith("build "):
+            return "chore"
+        elif msg.startswith("ci:") or msg.startswith("ci "):
+            return "chore"
+
+        # Fallback to keyword matching
         if any(kw in msg for kw in ["refactor", "restructure", "reorganize"]):
             return "refactor"
         elif any(kw in msg for kw in ["fix", "bug", "patch", "hotfix"]):

@@ -1,6 +1,7 @@
 """Context generator for creating .brain-context.md and .brain-context.json files."""
 
 import json
+from collections import defaultdict
 from pathlib import Path
 from typing import Optional
 from datetime import datetime
@@ -13,12 +14,14 @@ from brain.models.core import (
 from brain.analyzer.dependency_analyzer import DependencyAnalyzer, DependencyGraph
 from brain.analyzer.architecture_analyzer import ArchitectureAnalyzer
 from brain.analyzer.git_analyzer import GitAnalyzer
+from brain.analyzer.business_rule_extractor import BusinessRuleExtractor
+from brain.storage.sqlite_storage import SQLiteStorage
 
 
 class ContextGenerator:
     """Generates compressed context files for LLM consumption."""
 
-    def __init__(self, project_root: Path, project_name: Optional[str] = None):
+    def __init__(self, project_root: Path, project_name: Optional[str] = None, use_persistent_storage: bool = True):
         self.project_root = project_root
         self.project_name = project_name or project_root.name
         self.project_graph = ProjectGraph()
@@ -27,6 +30,14 @@ class ContextGenerator:
         self.dependency_analyzer = DependencyAnalyzer()
         self.architecture_analyzer = ArchitectureAnalyzer()
         self.git_analyzer = GitAnalyzer(project_root)
+        self.business_rule_extractor = BusinessRuleExtractor()
+
+        # Persistent storage
+        self.use_persistent_storage = use_persistent_storage
+        self.storage: Optional[SQLiteStorage] = None
+        if use_persistent_storage:
+            db_path = project_root / ".brain" / "brain.db"
+            self.storage = SQLiteStorage(db_path)
 
     def add_file_entity(self, file_entity: FileEntity):
         """Add a file entity to the project graph."""
@@ -44,6 +55,44 @@ class ContextGenerator:
         self.project_graph.functions[function_entity.qualified_name] = function_entity
         self.architecture_analyzer.add_function(function_entity)
 
+    def load_from_storage(self) -> bool:
+        """Load project graph from persistent storage. Returns True if loaded."""
+        if not self.storage:
+            return False
+        try:
+            self.project_graph = self.storage.load_project_graph()
+            if len(self.project_graph.files) == 0:
+                return False
+            
+            # Re-populate analyzers with loaded data
+            self._repopulate_analyzers()
+            
+            # Run analysis on loaded data
+            self.finalize()
+            return True
+        except Exception:
+            return False
+
+    def _repopulate_analyzers(self):
+        """Re-populate analyzers with data from loaded project graph."""
+        for file_entity in self.project_graph.files.values():
+            self.dependency_analyzer.add_file(file_entity)
+            self.architecture_analyzer.add_file(file_entity)
+        
+        for class_entity in self.project_graph.classes.values():
+            self.architecture_analyzer.add_class(class_entity)
+        
+        for func_entity in self.project_graph.functions.values():
+            self.architecture_analyzer.add_function(func_entity)
+
+    def save_to_storage(self):
+        """Save project graph to persistent storage."""
+        if self.storage:
+            self.storage.save_project_graph(self.project_graph)
+            # Save cognitive model
+            if "cognitive_model" in self.project_graph.metadata:
+                self.storage.save_cognitive_model(self.project_graph, self.project_graph.metadata["cognitive_model"])
+
     def finalize(self):
         """Finalize analysis and build graphs."""
         self.dependency_graph = self.dependency_analyzer.analyze()
@@ -52,6 +101,12 @@ class ContextGenerator:
         # Git history analysis
         if self.git_analyzer.is_available():
             self._analyze_git_history()
+
+        # Business rule extraction
+        self._extract_business_rules()
+
+        # Build cognitive model
+        self._build_cognitive_model()
 
         # Add to project graph
         self.project_graph.dependencies = self.dependency_graph.internal_dependencies
@@ -67,6 +122,14 @@ class ContextGenerator:
             "languages": self._get_languages(),
             "architecture_patterns": self.architecture_analysis.detected_patterns,
         }
+
+    def _build_cognitive_model(self):
+        """Build the cognitive model (KnowledgeGraph, embeddings, memory layers)."""
+        from brain.cognitive import CognitiveProjectModel
+        self.cognitive_model = CognitiveProjectModel(self.project_graph)
+        self.cognitive_model.build()
+        # Store in project graph metadata for persistence
+        self.project_graph.metadata["cognitive_model"] = self.cognitive_model
 
     def _get_languages(self) -> list[str]:
         """Get list of languages in the project."""
@@ -89,6 +152,30 @@ class ContextGenerator:
         hotspots = self.git_analyzer.get_hotspots(self.project_graph.files)
         if hotspots:
             self.project_graph.metadata["git_hotspots"] = hotspots[:10]
+
+    def _extract_business_rules(self):
+        """Extract business rules from source code."""
+        for file_entity in self.project_graph.files.values():
+            if file_entity.language != Language.PYTHON:
+                continue
+
+            # Get classes and functions for this file
+            file_classes = {
+                k: v for k, v in self.project_graph.classes.items()
+                if v.file_path == file_entity.relative_path
+            }
+            file_functions = {
+                k: v for k, v in self.project_graph.functions.items()
+                if v.file_path == file_entity.relative_path
+            }
+
+            rules = self.business_rule_extractor.extract_from_file(
+                file_entity, file_classes, file_functions
+            )
+            self.project_graph.business_rules.extend(rules)
+
+        # Sort by priority
+        self.project_graph.business_rules.sort(key=lambda r: r.priority)
 
     def generate_markdown(self, output_path: Path, max_tokens: int = 8000) -> str:
         """Generate .brain-context.md file."""
@@ -251,6 +338,47 @@ class ContextGenerator:
                     lines.append(f"- `{hs['file']}`: {hs['change_frequency']:.1f} changes/month, {hs['commits_count']} commits, authors: {', '.join(hs['authors'][:3])}")
                 lines.append("")
 
+        # Business Rules
+        if self.project_graph.business_rules:
+            lines.append("## Business Rules")
+            lines.append("")
+
+            # Group by type
+            by_type = defaultdict(list)
+            for rule in self.project_graph.business_rules:
+                by_type[rule.rule_type].append(rule)
+
+            type_order = ["invariant", "validation", "constraint", "workflow"]
+            for rule_type in type_order:
+                if rule_type not in by_type:
+                    continue
+                rules = by_type[rule_type]
+                lines.append(f"### {rule_type.title()} Rules ({len(rules)})")
+                lines.append("")
+                for rule in rules[:10]:
+                    lines.append(f"- **{rule.id}**: {rule.name}")
+                    lines.append(f"  {rule.description}")
+                    if rule.source_files:
+                        lines.append(f"  Source: {', '.join(rule.source_files)}")
+                    lines.append("")
+                if len(rules) > 10:
+                    lines.append(f"  ... and {len(rules) - 10} more {rule_type} rules")
+                    lines.append("")
+
+            # Other types
+            for rule_type, rules in by_type.items():
+                if rule_type in type_order:
+                    continue
+                lines.append(f"### {rule_type.title()} Rules ({len(rules)})")
+                lines.append("")
+                for rule in rules[:10]:
+                    lines.append(f"- **{rule.id}**: {rule.name}")
+                    lines.append(f"  {rule.description}")
+                    lines.append("")
+                if len(rules) > 10:
+                    lines.append(f"  ... and {len(rules) - 10} more {rule_type} rules")
+                    lines.append("")
+
         # File Index
         lines.append("## File Index")
         lines.append("")
@@ -392,6 +520,18 @@ class ContextGenerator:
                 ],
                 "hotspots": self.project_graph.metadata.get("git_hotspots", []),
             } if self.project_graph.evolution_events else {},
+            "business_rules": [
+                {
+                    "id": r.id,
+                    "name": r.name,
+                    "description": r.description,
+                    "source_files": r.source_files,
+                    "rule_type": r.rule_type,
+                    "priority": r.priority,
+                    "metadata": r.metadata,
+                }
+                for r in self.project_graph.business_rules
+            ] if self.project_graph.business_rules else [],
         }
 
         output_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")

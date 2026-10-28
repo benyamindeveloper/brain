@@ -9,16 +9,22 @@ tree-sitter-typescript>=0.20.0
 gitpython>=3.1.0
 rich>=13.5.0
 pathspec>=0.10.0
+requests>=2.31.0
 
 [dev]
 pytest>=7.4.0
 pytest-cov>=4.1.0
 pytest-mock>=3.12.0
 ruff>=0.1.0
+flake8>=7.0.0
 mypy>=1.7.0
+types-requests>=2.31.0
 pre-commit>=3.5.0
 
 [test]
 pytest>=7.4.0
 pytest-cov>=4.1.0
 pytest-mock>=3.12.0
+
+[vscode]
+vscode-languageclient>=8.0.0

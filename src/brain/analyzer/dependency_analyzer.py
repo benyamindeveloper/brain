@@ -133,8 +133,18 @@ class DependencyAnalyzer:
         return False
 
     def _detect_circular_dependencies(self) -> list[list[str]]:
-        """Detect circular dependencies using Tarjan's algorithm."""
-        graph = {k: list(v) for k, v in self.import_graph.items() if k in self.file_entities}
+        """Detect circular dependencies using Tarjan's algorithm on resolved internal dependencies."""
+        # Build graph from resolved internal dependencies
+        internal_deps = self._resolve_internal_dependencies()
+        graph = defaultdict(list)
+        for dep in internal_deps:
+            graph[dep.source].append(dep.target)
+
+        # Also add nodes that have no outgoing edges
+        for f in self.file_entities:
+            if f not in graph:
+                graph[f] = []
+
         index = 0
         stack = []
         on_stack = set()

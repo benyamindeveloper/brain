@@ -1,0 +1,1 @@
+"""Storage layer for Project Brain - SQLite persistence."""

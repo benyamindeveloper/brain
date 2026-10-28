@@ -4,6 +4,10 @@ Version: 0.1.0
 Summary: Cognitive Context & Evolution Engine for AI-Assisted Development
 Author-email: Project Brain Team <team@project-brain.dev>
 License: MIT
+Project-URL: Homepage, https://github.com/project-brain/project-brain
+Project-URL: Repository, https://github.com/project-brain/project-brain
+Project-URL: Issues, https://github.com/project-brain/project-brain/issues
+Project-URL: Documentation, https://github.com/project-brain/project-brain/docs
 Keywords: ai,coding-assistant,context-engine,ast,architecture-analysis
 Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
@@ -26,14 +30,19 @@ Requires-Dist: tree-sitter-typescript>=0.20.0
 Requires-Dist: gitpython>=3.1.0
 Requires-Dist: rich>=13.5.0
 Requires-Dist: pathspec>=0.10.0
+Requires-Dist: requests>=2.31.0
 Provides-Extra: dev
 Requires-Dist: pytest>=7.4.0; extra == "dev"
 Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
 Requires-Dist: pytest-mock>=3.12.0; extra == "dev"
 Requires-Dist: ruff>=0.1.0; extra == "dev"
+Requires-Dist: flake8>=7.0.0; extra == "dev"
 Requires-Dist: mypy>=1.7.0; extra == "dev"
+Requires-Dist: types-requests>=2.31.0; extra == "dev"
 Requires-Dist: pre-commit>=3.5.0; extra == "dev"
 Provides-Extra: test
 Requires-Dist: pytest>=7.4.0; extra == "test"
 Requires-Dist: pytest-cov>=4.1.0; extra == "test"
 Requires-Dist: pytest-mock>=3.12.0; extra == "test"
+Provides-Extra: vscode
+Requires-Dist: vscode-languageclient>=8.0.0; extra == "vscode"

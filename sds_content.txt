@@ -107,7 +107,7 @@ Rather than full rebuilds, the engine watches filesystem changes (FileSystemWatc
 5.7 Local First
 All analysis runs on the developer's machine
 No code is sent to external servers
-Supports local LLMs (Ollama, llama.cpp)
+Supports local LLMs (llama.cpp via llama-cpp-python, Ollama as optional fallback)
 Optional telemetry with user consent
 5.8 Architecture Awareness
 Understands common design patterns, including Layered Architecture, MVC/MVVM/MVP, Clean Architecture, Hexagonal Architecture, Domain-Driven Design (DDD), CQRS, the Repository Pattern, and Microservices versus Monolith.
@@ -161,6 +161,72 @@ Technical Stack
 Example Use Case
 
 Tier 3 — Cognitive Memory & Evolution Engine
+
+### LLM Integration Architecture (llama.cpp Direct)
+
+Project Brain uses **llama.cpp via llama-cpp-python** as the primary LLM execution engine, ensuring **true local-first** operation with **zero external dependencies**.
+
+#### Architecture Principles
+- **Zero Network Dependency**: No HTTP server, no localhost connections, no daemon processes
+- **In-Process Execution**: llama.cpp runs entirely in-process via llama-cpp-python bindings
+- **Model Format**: GGUF format for optimal CPU/GPU inference
+- **Resource Management**: Explicit model loading/unloading with context managers
+
+#### Technical Stack
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| Inference Engine | llama.cpp (via llama-cpp-python) | Core inference |
+| Model Format | GGUF | Quantized model storage |
+| Context Window | Configurable (default 8192) | Context length |
+| Hardware Acceleration | CPU / Metal / CUDA / Vulkan | Via 
+_gpu_layers |
+| Threading | Configurable (
+_threads) | CPU parallelism |
+| Quantization | GGML/GGUF (q4_k_m, q5_k_m, q8_0, etc.) | Model compression |
+
+#### Configuration (LLMConfig)
+`python
+@dataclass
+class LLMConfig:
+    provider: LLMProvider = LLMProvider.LLAMA_CPP
+    model_path: str  # Path to .gguf file
+    n_ctx: int = 8192           # Context window
+    n_gpu_layers: int = 0       # GPU offload (0 = CPU)
+    n_threads: int = 4          # CPU threads
+    n_batch: int = 512          # Batch size
+    temperature: float = 0.1    # Sampling temperature
+    top_p: float = 0.95         # Nucleus sampling
+    top_k: int = 40             # Top-k sampling
+    max_tokens: int = 4096      # Max generation
+    stop_sequences: List[str]   # Stop tokens
+`
+
+#### Integration Points
+1. **Pipeline Stage 6 (LLM Execution)**: Direct LlamaCppDirectClient.generate()
+2. **Prompt Engine**: Uses LlamaCppDirectClient.chat() with chat templates
+3. **Configuration**: LLMConfig with full llama.cpp parameter exposure
+3. **Fallback**: Simulation mode when model unavailable
+
+#### Optional Ollama Compatibility
+Ollama is supported as an **optional fallback** for teams preferring server-based inference:
+- LLMProvider.OLLAMA for backward compatibility
+- Same interface (generate, chat, stream)
+- Not recommended for production (adds network dependency)
+
+#### Why llama.cpp Direct?
+| Factor | llama.cpp Direct | Ollama |
+|--------|------------------|--------|
+| Network Dependency | None | HTTP server required |
+| Process Isolation | In-process | Separate daemon |
+| Resource Overhead | Minimal | Higher (daemon + HTTP) |
+| Model Loading | Explicit, controlled | Automatic, opaque |
+| GPU Management | Explicit (
+_gpu_layers) | Implicit |
+| Embedding Support | Native | Via API |
+| Stream Support | Native | Via HTTP stream |
+
+This architecture ensures Project Brain remains **truly local-first** with **zero external dependencies** for LLM inference.
+
 Status: Long-term Vision   |   Complexity: High   |   Timeline: 8–12 weeks
 Purpose
 Create persistent memory and deep architectural understanding.
@@ -315,7 +381,7 @@ Success Criteria
 Plugin highlights duplicate component creation
 Plugin warns about architecture violations
 Risk scoring works for typical changes
-Local LLM integration (optional)
+Local LLM integration via llama.cpp (direct), Ollama as optional fallback
 
 18.3 Phase 3: Cognitive Memory (8–12 weeks)
 Goal: build a persistent project brain with evolution tracking.
@@ -390,7 +456,7 @@ Internal References
 RFC-01: Project Graph & Memory Manifest
 RFC-02: Context Compression Algorithm
 RFC-03: AI Guard Integration
-RFC-04: Local LLM Execution
+RFC-04: Local LLM Execution (llama.cpp direct)
 
 21.5 Document Sign-off
 

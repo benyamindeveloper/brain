@@ -1,0 +1,407 @@
+"""Prompt Engine - generates optimal prompts from cognitive memory (13.2, 175)."""
+
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import List, Dict, Any, Optional
+from datetime import datetime
+from enum import Enum
+
+from brain.cognitive import CognitiveProjectModel, KnowledgeGraph, SemanticTriple, TripleType
+from brain.models.core import ProjectGraph, BusinessRuleEntity, EvolutionEventEntity
+
+
+class TaskType(str, Enum):
+    """Types of tasks for prompt generation."""
+    CODE_GENERATION = "code_generation"
+    REFACTORING = "refactoring"
+    BUG_FIX = "bug_fix"
+    FEATURE_IMPLEMENTATION = "feature_implementation"
+    CODE_REVIEW = "code_review"
+    ARCHITECTURE_DECISION = "architecture_decision"
+    DOCUMENTATION = "documentation"
+    TEST_GENERATION = "test_generation"
+    SECURITY_AUDIT = "security_audit"
+    PERFORMANCE_OPTIMIZATION = "performance_optimization"
+
+
+@dataclass
+class PromptContext:
+    """Context assembled for a specific task."""
+    task_type: TaskType
+    task_description: str
+    relevant_entities: List[Dict[str, Any]] = field(default_factory=list)
+    relevant_triples: List[Dict[str, Any]] = field(default_factory=list)
+    business_rules: List[Dict[str, Any]] = field(default_factory=list)
+    evolution_context: List[Dict[str, Any]] = field(default_factory=list)
+    architecture_context: Dict[str, Any] = field(default_factory=dict)
+    similar_code: List[Dict[str, Any]] = field(default_factory=list)
+    warnings: List[str] = field(default_factory=list)
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class GeneratedPrompt:
+    """A generated prompt with metadata."""
+    system_prompt: str
+    user_prompt: str
+    context: PromptContext
+    estimated_tokens: int
+    model_recommendation: str = "gpt-4"
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+class PromptTemplate:
+    """Template for generating prompts."""
+    
+    SYSTEM_PROMPTS = {
+        TaskType.CODE_GENERATION: """You are an expert software engineer working on a project with a well-defined architecture. You have access to the project's cognitive model which includes its architecture, business rules, evolution history, and semantic relationships between code entities.
+
+Your task is to generate code that:
+1. Follows the project's architectural patterns and layer rules
+2. Respects business rules and invariants
+3. Reuses existing components rather than duplicating
+4. Follows the project's coding conventions
+5. Is consistent with the evolution history and design decisions
+
+Key architectural principles:
+- Layered architecture: {layers}
+- Detected patterns: {patterns}
+- Dependency direction: {dependency_rules}
+
+Business rules to respect:
+{business_rules}
+
+Relevant existing code:
+{relevant_code}
+
+Evolution context (why things are this way):
+{evolution_context}""",
+        
+        TaskType.REFACTORING: """You are an expert software architect performing a refactoring task. You have access to the project's cognitive model including its architecture, evolution history, and semantic relationships.
+
+Your task is to refactor code while:
+1. Preserving all business rules and invariants
+2. Not violating architecture layer boundaries
+3. Not breaking existing dependencies
+3. Maintaining semantic equivalence
+4. Following the project's evolution patterns
+
+Architecture constraints:
+- Layer rules: {layers}
+- Dependency direction: {dependency_rules}
+- Forbidden dependencies: {forbidden}
+
+Business rules that must be preserved:
+{business_rules}
+
+Evolution history (what changed and why):
+{evolution_context}
+
+Similar refactorings in history:
+{similar_changes}
+
+Current code to refactor:
+{current_code}""",
+        
+        TaskType.BUG_FIX: """You are an expert debugger with access to the project's cognitive model. You understand the architecture, business rules, and evolution history.
+
+Your task is to fix a bug while:
+1. Not introducing new bugs or violating business rules
+2. Not breaking architecture layer boundaries
+3. Understanding why the code was written this way (evolution context)
+4. Checking for similar bugs in related code
+
+Bug context:
+{bug_description}
+
+Relevant business rules:
+{business_rules}
+
+Evolution history of affected code:
+{evolution_context}
+
+Similar bugs in history:
+{similar_bugs}
+
+Current code:
+{current_code}""",
+        
+        TaskType.ARCHITECTURE_DECISION: """You are a software architect making an architectural decision. You have access to the project's complete cognitive model.
+
+Your task is to evaluate and recommend an architectural approach considering:
+1. Current architecture patterns and layer structure
+2. Business requirements and constraints
+3. Evolution history and past decisions
+3. Technical debt and scalability needs
+4. Team capabilities and conventions
+
+Current architecture:
+- Patterns: {patterns}
+- Layers: {layers}
+- Dependency rules: {dependency_rules}
+
+Business requirements:
+{business_rules}
+
+Evolution context (past decisions and rationale):
+{evolution_context}
+
+Decision to make:
+{decision_question}""",
+    }
+    
+    USER_PROMPTS = {
+        TaskType.CODE_GENERATION: """Generate code for: {task_description}
+
+Requirements:
+{requirements}
+
+Constraints:
+- Use existing components where possible (see relevant_code)
+- Follow architecture layers and dependency rules
+- Respect business rules
+- Follow project conventions""",
+        
+        TaskType.REFACTORING: """Refactor: {task_description}
+
+Current code:
+{current_code}
+
+Goals:
+{goals}
+
+Constraints:
+- Preserve all business rules
+- Maintain architecture layer boundaries
+- Don't break existing tests
+- Follow project conventions""",
+        
+        TaskType.BUG_FIX: """Fix bug: {bug_description}
+
+Current code:
+{current_code}
+
+Expected behavior:
+{expected_behavior}
+
+Actual behavior:
+{actual_behavior}
+
+Steps to reproduce:
+{steps_to_reproduce}""",
+    }
+    
+    @classmethod
+    def get_system_prompt(cls, task_type: TaskType, context: PromptContext) -> str:
+        """Generate system prompt for a task type."""
+        template = cls.SYSTEM_PROMPTS.get(task_type, cls.SYSTEM_PROMPTS[TaskType.CODE_GENERATION])
+        
+        # Format architecture context
+        layers = "\n".join([f"  - {k}: {v}" for k, v in context.architecture_context.get("layers", {}).items()])
+        patterns = ", ".join(context.architecture_context.get("patterns", []))
+        dependency_rules = "\n".join([f"  - {k} -> {v}" for k, v in context.architecture_context.get("dependency_rules", {}).items()])
+        forbidden = "\n".join([f"  - {k} -/-> {v}" for k, v in context.architecture_context.get("forbidden", {}).items()])
+        
+        # Format business rules
+        business_rules = "\n".join([f"  - [{r.get('priority', 1)}] {r.get('name', '')}: {r.get('description', '')}" 
+                                   for r in context.business_rules])
+        
+        # Format evolution context
+        evolution_context = "\n".join([f"  - {e.get('commit_hash', '')[:8]}: {e.get('message', '')[:100]}" 
+                                      for e in context.evolution_context[:5]])
+        
+        # Format relevant code
+        relevant_code = "\n\n".join([f"# {e.get('type', '')}: {e.get('qualified_name', e.get('name', ''))}\n# File: {e.get('file', '')}" 
+                                    for e in context.relevant_entities[:10]])
+        
+        return template.format(
+            layers=layers or "Not specified",
+            patterns=patterns or "None detected",
+            dependency_rules=dependency_rules or "Not specified",
+            forbidden=forbidden or "None",
+            business_rules=business_rules or "None",
+            evolution_context=evolution_context or "No recent changes",
+            relevant_code=relevant_code or "None",
+            similar_changes="Not available",
+            similar_bugs="Not available",
+            current_code="[To be provided]",
+        )
+    
+    @classmethod
+    def get_user_prompt(cls, task_type: TaskType, context: PromptContext) -> str:
+        """Generate user prompt for a task type."""
+        template = cls.USER_PROMPTS.get(task_type, cls.USER_PROMPTS[TaskType.CODE_GENERATION])
+        
+        return template.format(
+            task_description=context.task_description,
+            requirements=context.metadata.get("requirements", "Not specified"),
+            goals=context.metadata.get("goals", "Not specified"),
+            current_code=context.metadata.get("current_code", "[To be provided]"),
+            expected_behavior=context.metadata.get("expected_behavior", "Not specified"),
+            actual_behavior=context.metadata.get("actual_behavior", "Not specified"),
+            steps_to_reproduce=context.metadata.get("steps_to_reproduce", "Not specified"),
+        )
+
+
+class PromptEngine:
+    """Generates optimal prompts from cognitive memory for specific tasks."""
+    
+    def __init__(self, cognitive_model: 'CognitiveProjectModel'):
+        self.cognitive_model = cognitive_model
+        self.project_graph = cognitive_model.project_graph
+    
+    def generate_prompt(self, task_type: TaskType, task_description: str, 
+                       metadata: Optional[Dict[str, Any]] = None) -> GeneratedPrompt:
+        """Generate an optimal prompt for a task."""
+        
+        # Get relevant context from cognitive model
+        context = self._build_context(task_type, task_description, metadata or {})
+        
+        # Generate prompts
+        system_prompt = PromptTemplate.get_system_prompt(task_type, context)
+        user_prompt = PromptTemplate.get_user_prompt(task_type, context)
+        
+        # Estimate tokens (rough: 1 token ≈ 4 chars)
+        total_chars = len(system_prompt) + len(user_prompt)
+        estimated_tokens = total_chars // 4
+        
+        # Select model based on complexity
+        model = self._select_model(estimated_tokens, task_type)
+        
+        return GeneratedPrompt(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            context=context,
+            estimated_tokens=estimated_tokens,
+            model_recommendation=model,
+            metadata={
+                "task_type": task_type.value,
+                "generated_at": datetime.now().isoformat(),
+            }
+        )
+    
+    def _build_context(self, task_type: TaskType, task_description: str, 
+                      metadata: Dict[str, Any]) -> PromptContext:
+        """Build context for the task from cognitive model."""
+        
+        # Use cognitive model's query to find relevant entities
+        cognitive_context = self.cognitive_model.get_context_for_task(task_description)
+        
+        # Extract business rules
+        business_rules = [
+            {
+                "id": r.id,
+                "name": r.name,
+                "description": r.description,
+                "rule_type": r.rule_type,
+                "priority": r.priority,
+                "source_files": r.source_files,
+            }
+            for r in self.project_graph.business_rules
+        ]
+        
+        # Evolution context
+        evolution_context = [
+            {
+                "commit_hash": e.commit_hash,
+                "timestamp": e.timestamp,
+                "author": e.author,
+                "message": e.message,
+                "event_type": e.event_type,
+                "impact_score": e.impact_score,
+                "files_changed": e.files_changed,
+            }
+            for e in self.project_graph.evolution_events[:10]
+        ]
+        
+        # Architecture context
+        architecture_context = {
+            "layers": {},
+            "patterns": self.project_graph.metadata.get("architecture_patterns", []),
+            "dependency_rules": {},
+            "forbidden": {},
+        }
+        
+        if hasattr(self.cognitive_model, 'knowledge_graph'):
+            # Extract layer info from knowledge graph
+            for triple in self.cognitive_model.knowledge_graph.triples:
+                if triple.predicate == TripleType.BELONGS_TO_LAYER:
+                    file_id = triple.subject
+                    layer_id = triple.object
+                    if file_id.startswith("file:") and layer_id.startswith("layer:"):
+                        architecture_context["layers"][file_id[5:]] = layer_id[6:]
+        
+        # Add dependency rules
+        for layer_name, layer_entity in self.project_graph.architecture_layers.items():
+            architecture_context["dependency_rules"][layer_name.value] = [l.value for l in layer_entity.allowed_dependencies]
+            architecture_context["forbidden"][layer_name.value] = [l.value for l in layer_entity.forbidden_dependencies]
+        
+        # Extract relevant entities from cognitive context
+        relevant_entities = cognitive_context.get("entities", [])
+        
+        # Extract relevant triples
+        relevant_triples = cognitive_context.get("triples", [])
+        
+        # Find similar code from vector embeddings
+        similar_code = []
+        if hasattr(self.cognitive_model, 'embedding_manager'):
+            # Could use embedding manager to find similar code
+            pass
+        
+        return PromptContext(
+            task_type=TaskType(task_type) if isinstance(task_type, str) else task_type,
+            task_description=task_description,
+            relevant_entities=relevant_entities,
+            relevant_triples=relevant_triples,
+            business_rules=business_rules,
+            evolution_context=evolution_context,
+            architecture_context=architecture_context,
+            similar_code=similar_code,
+            metadata=metadata,
+        )
+    
+    def _select_model(self, estimated_tokens: int, task_type: TaskType) -> str:
+        """Select appropriate model based on token count and task complexity."""
+        if estimated_tokens > 8000:
+            return "gpt-4-turbo"
+        elif estimated_tokens > 4000:
+            return "gpt-4"
+        elif task_type in (TaskType.ARCHITECTURE_DECISION, TaskType.REFACTORING):
+            return "gpt-4"
+        else:
+            return "gpt-3.5-turbo"
+    
+    def generate_prompt_for_change(self, change_description: str, 
+                                   change_type: TaskType = TaskType.CODE_GENERATION,
+                                   current_code: str = "",
+                                   requirements: str = "") -> GeneratedPrompt:
+        """Convenience method for generating prompts for code changes."""
+        metadata = {
+            "current_code": current_code,
+            "requirements": requirements,
+        }
+        return self.generate_prompt(change_type, change_description, metadata)
+    
+    def generate_refactoring_prompt(self, refactoring_description: str,
+                                    current_code: str,
+                                    goals: List[str]) -> GeneratedPrompt:
+        """Generate prompt for refactoring task."""
+        metadata = {
+            "current_code": current_code,
+            "goals": "\n".join(f"- {g}" for g in goals),
+        }
+        return self.generate_prompt(TaskType.REFACTORING, refactoring_description, metadata)
+    
+    def generate_bug_fix_prompt(self, bug_description: str,
+                                current_code: str,
+                                expected_behavior: str,
+                                actual_behavior: str,
+                                steps_to_reproduce: str) -> GeneratedPrompt:
+        """Generate prompt for bug fix task."""
+        metadata = {
+            "current_code": current_code,
+            "expected_behavior": expected_behavior,
+            "actual_behavior": actual_behavior,
+            "steps_to_reproduce": steps_to_reproduce,
+        }
+        return self.generate_prompt(TaskType.BUG_FIX, bug_description, metadata)

@@ -1,0 +1,46 @@
+# Pre-commit hooks for Project Brain
+# Install: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: debug-logger
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.0
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [pydantic>=2.0, click>=8.0, rich>=13.0]
+
+  - repo: local
+    hooks:
+      - id: brain-scan
+        name: Brain Scan
+        entry: brain scan
+        language: system
+        pass_filenames: false
+        always_run: true
+        description: 'Run Project Brain scan on the codebase'
+
+      - id: brain-guard
+        name: Brain Guard
+        entry: brain guard post-validate
+        language: system
+        pass_filenames: true
+        description: 'Run Brain Guard validation on changed files'

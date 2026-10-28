@@ -122,8 +122,18 @@ class PythonASTAnalyzer:
         old_class = self.current_class
         self.current_class = qualified_name
 
+        # Track methods before visiting children
+        method_names_before = set(self.functions.keys())
+
         for child in node.body:
             self._visit(child)
+
+        # Add methods to class entity
+        method_names_after = set(self.functions.keys())
+        new_methods = method_names_after - method_names_before
+        for method_name in new_methods:
+            if method_name.startswith(qualified_name + "."):
+                class_entity.methods.append(method_name.split(".")[-1])
 
         self.current_class = old_class
 
